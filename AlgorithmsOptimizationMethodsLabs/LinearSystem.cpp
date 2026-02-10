@@ -57,6 +57,7 @@ void LinearSystem::solveJordanGauss() {
             for (int i = 0; i < m; i++) {
                 if (i != pivotRow) {
                     Fraction factor = matrix[i][j];
+
                     for (int k = j; k <= n; k++) {
                         matrix[i][k] = matrix[i][k] - (factor * matrix[pivotRow][k]);
                     }

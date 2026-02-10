@@ -62,6 +62,7 @@ std::ostream& operator<<(std::ostream& os, const Fraction& f) {
     else {
         os << f.num << "/" << f.den;
     }
+
     return os;
 }
 
@@ -69,5 +70,6 @@ std::istream& operator>>(std::istream& is, Fraction& f) {
     long long n;
     is >> n;
     f = Fraction(n);
+
     return is;
 }
