@@ -18,6 +18,7 @@ public:
     void loadFromFile(const std::string& filename);
     void printMatrix() const;
     virtual void solveJordanGauss();
+    void printGeneralSolution(const std::vector<int>& colToVar, int rank) const;
 };
 
 #endif

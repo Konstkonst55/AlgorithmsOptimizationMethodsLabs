@@ -1,4 +1,4 @@
-#include "LinearSystem.h"
+﻿#include "LinearSystem.h"
 
 LinearSystem::LinearSystem() : m(0), n(0) {}
 
@@ -73,6 +73,7 @@ void LinearSystem::solveJordanGauss() {
     }
 
     bool hasSolution = true;
+
     for (int i = 0; i < m; i++) {
         bool allZeros = true;
 
@@ -94,6 +95,8 @@ void LinearSystem::solveJordanGauss() {
     }
     else if (pivotRow < n) {
         std::cout << "System has INFINITE solutions." << std::endl;
+
+        printGeneralSolution(colToVar, pivotRow);
     }
     else {
         std::cout << "System has a UNIQUE solution:" << std::endl;
@@ -103,5 +106,77 @@ void LinearSystem::solveJordanGauss() {
                 std::cout << "x" << j + 1 << " = " << matrix[colToVar[j]][n] << std::endl;
             }
         }
+    }
+}
+
+void LinearSystem::printGeneralSolution(const std::vector<int>& colToVar, int rank) const {
+    std::cout << "\nGeneral solution:" << std::endl;
+
+    std::vector<int> basicVars;
+    std::vector<int> freeVars;
+
+    for (int j = 0; j < n; j++) {
+        if (colToVar[j] != -1) {
+            basicVars.push_back(j);
+        }
+        else {
+            freeVars.push_back(j);
+        }
+    }
+
+    for (int basic : basicVars) {
+        int row = colToVar[basic];
+        std::cout << "x" << basic + 1 << " = ";
+
+        bool firstTerm = true;
+
+        if (matrix[row][n] != Fraction(0)) {
+            std::cout << matrix[row][n];
+            firstTerm = false;
+        }
+
+        for (int free : freeVars) {
+            Fraction coeff = matrix[row][free];
+
+            if (coeff != Fraction(0)) {
+                if (!firstTerm && coeff > Fraction(0)) {
+                    std::cout << " + ";
+                }
+                else if (!firstTerm && coeff < Fraction(0)) {
+                    std::cout << " - ";
+                    coeff = coeff.abs();
+                }
+                else if (firstTerm && coeff < Fraction(0)) {
+                    std::cout << "-";
+                    coeff = coeff.abs();
+                }
+
+                if (coeff == Fraction(1)) {
+                    std::cout << "x" << free + 1;
+                }
+                else {
+                    std::cout << coeff << "*x" << free + 1;
+                }
+
+                firstTerm = false;
+            }
+        }
+
+        if (firstTerm) {
+            std::cout << "0";
+        }
+
+        std::cout << std::endl;
+    }
+
+    if (!freeVars.empty()) {
+        std::cout << "\nwhere ";
+
+        for (size_t i = 0; i < freeVars.size(); i++) {
+            if (i > 0) std::cout << ", ";
+            std::cout << "x" << freeVars[i] + 1;
+        }
+
+        std::cout << " are free parameters" << std::endl;
     }
 }
