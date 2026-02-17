@@ -4,7 +4,8 @@ int main() {
     LinearSystem sys;
 
     sys.loadFromFile("input.txt");
-    sys.solveJordanGauss();
+
+    sys.findAllBasisSolutions();
 
     return 0;
 }
