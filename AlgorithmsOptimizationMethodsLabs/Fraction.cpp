@@ -7,8 +7,10 @@ void Fraction::simplify() {
     }
 
     long long common = std::gcd(std::abs(num), std::abs(den));
-    num /= common;
-    den /= common;
+    if (common != 0) {
+        num /= common;
+        den /= common;
+    }
 }
 
 Fraction::Fraction(long long n, long long d) : num(n), den(d) {
@@ -51,8 +53,28 @@ bool Fraction::operator<(const Fraction& other) const {
     return num * other.den < other.num * den;
 }
 
+bool Fraction::operator==(long long value) const {
+    return num == value && den == 1;
+}
+
+bool Fraction::operator!=(long long value) const {
+    return !(*this == value);
+}
+
 Fraction Fraction::abs() const {
     return Fraction(std::abs(num), den);
+}
+
+bool Fraction::isZero() const {
+    return num == 0;
+}
+
+long long Fraction::getNum() const {
+    return num;
+}
+
+long long Fraction::getDen() const {
+    return den;
 }
 
 std::ostream& operator<<(std::ostream& os, const Fraction& f) {
